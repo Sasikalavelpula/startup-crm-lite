@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 const FILTER_OPTIONS = [
@@ -36,10 +35,10 @@ const FilterBar = ({ activeFilter, onFilterChange, leads }) => {
             type="button"
             onClick={() => onFilterChange(option)}
             aria-pressed={isActive}
-            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-150 cursor-pointer ${
+            className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-all duration-200 ease-in-out cursor-pointer ${
               isActive
-                ? 'bg-primary text-white shadow-sm'
-                : 'bg-slate-100 text-text-gray hover:bg-slate-200'
+                ? 'bg-primary text-white shadow-sm scale-102'
+                : 'bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 hover:text-gray-900 dark:hover:text-white hover:scale-102'
             }`}
           >
             {option} ({getCount(option)})

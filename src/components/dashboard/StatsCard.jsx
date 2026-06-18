@@ -45,11 +45,11 @@ const StatsCard = ({ title, value, icon: Icon, change, color }) => {
   const activeColors = colorMap[color] || colorMap.primary;
 
   return (
-    <div className={`bg-card p-6 rounded-2xl border border-slate-200/80 border-l-4 ${activeColors.border} shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 animate-scale-up group`}>
+    <div className={`bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 border-l-4 ${activeColors.border} shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 animate-scale-up group`}>
       <div className="flex justify-between items-start">
         <div className="space-y-2">
-          <p className="text-xs font-bold text-text-gray uppercase tracking-wider">{title}</p>
-          <h3 className="text-3xl font-extrabold text-text-dark tracking-tight">{value}</h3>
+          <p className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">{title}</p>
+          <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white tracking-tight">{value}</h3>
         </div>
         
         {/* Icon Container with subtle zoom on hover */}
@@ -64,14 +64,14 @@ const StatsCard = ({ title, value, icon: Icon, change, color }) => {
         {/* Trend badge */}
         <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-bold border ${
           isNegative
-            ? 'bg-red-50 text-danger border-red-100'
+            ? 'bg-red-50 dark:bg-red-950/20 text-danger dark:text-red-400 border-red-100 dark:border-red-900'
             : isNeutral
-            ? 'bg-slate-50 text-text-gray border-slate-100'
-            : 'bg-green-50 text-success border-green-100'
+            ? 'bg-gray-50 dark:bg-gray-900 text-gray-550 dark:text-gray-455 border-gray-100 dark:border-gray-800'
+            : 'bg-green-50 dark:bg-green-950/20 text-success dark:text-green-400 border-green-100 dark:border-green-900'
         }`}>
           {change}
         </span>
-        <span className="text-[11px] text-text-gray font-medium">vs last month</span>
+        <span className="text-[11px] text-gray-500 dark:text-gray-400 font-medium">vs last month</span>
       </div>
     </div>
   );

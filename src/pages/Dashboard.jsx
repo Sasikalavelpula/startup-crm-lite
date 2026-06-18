@@ -9,6 +9,8 @@ import StatsCard from '../components/dashboard/StatsCard';
 import PipelineOverview from '../components/dashboard/PipelineOverview';
 import RecentLeads from '../components/dashboard/RecentLeads';
 import QuickActions from '../components/dashboard/QuickActions';
+import { useLeads } from '../context/LeadContext';
+import { useTheme } from '../context/ThemeContext';
 
 /**
  * Mock chart data representing lead acquisition over the past 6 months.
@@ -24,19 +26,6 @@ const mockChartData = [
 ];
 
 /**
- * Mock leads data for initial dashboard state.
- * Real CRM integration will occur in a later phase.
- */
-const mockLeads = [
-  { id: 1, name: 'Alice Smith', company: 'TechNova', status: 'Contacted', value: 4500, date: 'June 15, 2026' },
-  { id: 2, name: 'Bob Johnson', company: 'GreenVibe Corp', status: 'Qualified', value: 12000, date: 'June 14, 2026' },
-  { id: 3, name: 'Clara Oswald', company: 'Starlight Media', status: 'Negotiating', value: 8500, date: 'June 12, 2026' },
-  { id: 4, name: 'David Miller', company: 'Apex Solutions', status: 'New', value: 2300, date: 'June 11, 2026' },
-  { id: 5, name: 'Emma Watson', company: 'Lumina Group', status: 'Qualified', value: 15000, date: 'June 10, 2026' },
-  { id: 6, name: 'Frank Castle', company: 'Punisher Inc', status: 'Contacted', value: 3100, date: 'June 09, 2026' },
-];
-
-/**
  * Dashboard Page - Assembles all dashboard modules into a cohesive, responsive grid layout.
  * Displays key metrics via StatsCards, historical trends via AreaChart, sales pipeline distributions,
  * recent lead transactions, and operational shortcuts.
@@ -46,33 +35,41 @@ const mockLeads = [
  */
 const Dashboard = () => {
   const navigate = useNavigate();
+  const { leads } = useLeads();
+  const { isDarkMode } = useTheme();
 
-  // Define metrics statistics card array
+  // Calculate dynamic stats
+  const totalLeads = leads.length;
+  const wonLeadsCount = leads.filter((l) => l.status === 'Won').length;
+  const conversionRate = totalLeads > 0 ? ((wonLeadsCount / totalLeads) * 100).toFixed(1) + '%' : '0%';
+  const totalValue = leads.reduce((sum, l) => sum + (Number(l.value) || 0), 0);
+
+  // Define metrics statistics card array dynamically
   const metrics = [
     {
       title: 'Total Leads',
-      value: '1,248',
+      value: totalLeads.toLocaleString(),
       icon: Users,
       change: '+12.5%',
       color: 'primary',
     },
     {
       title: 'Conversion Rate',
-      value: '24.3%',
+      value: conversionRate,
       icon: TrendingUp,
       change: '+4.1%',
       color: 'success',
     },
     {
       title: 'Deals Closed',
-      value: '86',
+      value: wonLeadsCount.toLocaleString(),
       icon: CheckCircle,
       change: '+8.2%',
       color: 'warning',
     },
     {
       title: 'Pipeline Value',
-      value: '$148,600',
+      value: '$' + totalValue.toLocaleString(),
       icon: DollarSign,
       change: '-2.4%',
       color: 'danger',
@@ -111,10 +108,21 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 animate-fade-in">
       {/* Toast notifications container */}
-      <Toaster position="top-right" reverseOrder={false} />
+      <Toaster 
+        position="top-right" 
+        reverseOrder={false} 
+        toastOptions={{
+          style: {
+            borderRadius: '12px',
+            background: isDarkMode ? '#1E293B' : '#FFFFFF',
+            color: isDarkMode ? '#F8FAFC' : '#0F172A',
+            border: isDarkMode ? '1px solid #334155' : '1px solid #E2E8F0',
+          }
+        }}
+      />
 
       {/* Metrics Grid Section - Responsive Columns */}
-      <section className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" aria-label="Quick Stats">
+      <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6" aria-label="Quick Stats">
         {metrics.map((metric, idx) => (
           <StatsCard
             key={idx}
@@ -130,13 +138,13 @@ const Dashboard = () => {
       {/* Middle Section: Chart & Quick Actions Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Acquisition Area Chart (Spans 2 columns on desktop) */}
-        <section className="lg:col-span-2 bg-card p-6 rounded-2xl border border-slate-200/80 shadow-sm" aria-label="Acquisition Progress">
+        <section className="lg:col-span-2 bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-200" aria-label="Acquisition Progress">
           <div className="flex justify-between items-center mb-6">
             <div>
-              <h3 className="font-bold text-lg text-text-dark">Acquisition Progress</h3>
-              <p className="text-xs text-text-gray">Overview of incoming leads and closed conversions</p>
+              <h3 className="font-bold text-lg text-gray-900 dark:text-white">Acquisition Progress</h3>
+              <p className="text-xs text-gray-500 dark:text-gray-400">Overview of incoming leads and closed conversions</p>
             </div>
-            <div className="flex gap-4 text-xs font-semibold">
+            <div className="flex gap-4 text-xs font-semibold text-gray-700 dark:text-gray-300">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded bg-primary"></span>
                 Leads
@@ -161,16 +169,23 @@ const Dashboard = () => {
                     <stop offset="95%" stopColor="#22C55E" stopOpacity={0}/>
                   </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#F1F5F9" />
-                <XAxis dataKey="name" stroke="#94A3B8" fontSize={11} tickLine={false} />
-                <YAxis stroke="#94A3B8" fontSize={11} tickLine={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke={isDarkMode ? '#374151' : '#F1F5F9'} />
+                <XAxis dataKey="name" stroke={isDarkMode ? '#94A3B8' : '#64748B'} fontSize={11} tickLine={false} />
+                <YAxis stroke={isDarkMode ? '#94A3B8' : '#64748B'} fontSize={11} tickLine={false} />
                 <Tooltip 
                   contentStyle={{ 
-                    background: '#FFF', 
-                    border: '1px solid #E2E8F0', 
+                    background: isDarkMode ? '#1E293B' : '#FFF', 
+                    border: isDarkMode ? '1px solid #374151' : '1px solid #E2E8F0', 
                     borderRadius: '12px', 
-                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)' 
+                    boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.05)',
+                    color: isDarkMode ? '#F8FAFC' : '#0F172A'
                   }} 
+                  itemStyle={{
+                    color: isDarkMode ? '#E2E8F0' : '#334155'
+                  }}
+                  labelStyle={{
+                    color: isDarkMode ? '#94A3B8' : '#64748B'
+                  }}
                 />
                 <Area type="monotone" dataKey="leads" stroke="#2563EB" strokeWidth={2.5} fillOpacity={1} fill="url(#colorLeads)" />
                 <Area type="monotone" dataKey="conversions" stroke="#22C55E" strokeWidth={2.5} fillOpacity={1} fill="url(#colorConversions)" />
@@ -193,12 +208,12 @@ const Dashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Recent Leads Table (Spans 2 columns on desktop) */}
         <section className="lg:col-span-2" aria-label="Lead Activity Log">
-          <RecentLeads leads={mockLeads} />
+          <RecentLeads leads={leads} />
         </section>
 
         {/* Pipeline Overview Chart (Spans 1 column on desktop) */}
         <section aria-label="Pipeline Stages Distribution">
-          <PipelineOverview leads={mockLeads} />
+          <PipelineOverview leads={leads} />
         </section>
       </div>
     </div>

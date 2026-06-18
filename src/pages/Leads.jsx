@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
 import { LayoutGrid, List, Plus } from 'lucide-react';
@@ -10,18 +10,8 @@ import LeadTable from '../components/leads/LeadTable';
 import SearchBar from '../components/common/SearchBar';
 import FilterBar from '../components/common/FilterBar';
 import EmptyState from '../components/common/EmptyState';
-
-/**
- * Initial leads database populated with standard seed values.
- * Fields include unique IDs, names, contact channels, statuses, values, capture sources, and dates.
- */
-const initialLeads = [
-  { id: 1, name: 'Alice Smith', email: 'alice@technova.io', company: 'TechNova', status: 'Contacted', value: 4500, phone: '+1 (555) 019-2834', source: 'LinkedIn', date: 'June 15, 2026' },
-  { id: 2, name: 'Bob Johnson', email: 'bob@greenvibe.com', company: 'GreenVibe Corp', status: 'Won', value: 12000, phone: '+1 (555) 014-9821', source: 'Website', date: 'June 14, 2026' },
-  { id: 3, name: 'Clara Oswald', email: 'clara@starlight.co', company: 'Starlight Media', status: 'Proposal Sent', value: 8500, phone: '+1 (555) 016-5544', source: 'Referral', date: 'June 12, 2026' },
-  { id: 4, name: 'David Miller', email: 'david@apexsol.com', company: 'Apex Solutions', status: 'New', value: 2300, phone: '+1 (555) 012-7711', source: 'Cold Call', date: 'June 11, 2026' },
-  { id: 5, name: 'Emma Watson', email: 'emma@lumina.org', company: 'Lumina Group', status: 'Meeting Scheduled', value: 15000, phone: '+1 (555) 018-3489', source: 'Email Campaign', date: 'June 10, 2026' },
-];
+import { useLeads } from '../context/LeadContext';
+import { useTheme } from '../context/ThemeContext';
 
 /**
  * Leads Page - The core CRM Lead Management console.
@@ -33,9 +23,10 @@ const initialLeads = [
  */
 const Leads = () => {
   const location = useLocation();
+  const { leads, addLead, updateLead, deleteLead } = useLeads();
+  const { isDarkMode } = useTheme();
 
   // Primary State Holders
-  const [leads, setLeads] = useState(initialLeads);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedLead, setSelectedLead] = useState(null);
   
@@ -43,26 +34,6 @@ const Leads = () => {
   const [viewMode, setViewMode] = useState('table'); // 'table' | 'card'
   const [searchQuery, setSearchQuery] = useState('');
   const [activeFilter, setActiveFilter] = useState('All');
-
-  // Trigger modal display if routed from Dashboard with 'openAddModal' set
-  useEffect(() => {
-    if (location.state?.openAddModal) {
-      handleOpenAddModal();
-      // Clean up routing history to prevent modal triggering on manual page reloads
-      window.history.replaceState({}, document.title);
-    }
-  }, [location]);
-
-  // Accessibility: Listen for Escape key down to exit the modal overlay
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isModalOpen) {
-        handleCloseModal();
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isModalOpen]);
 
   /**
    * Modal Open Handler: Instantiates state for adding a fresh lead.
@@ -104,74 +75,86 @@ const Leads = () => {
   };
 
   /**
-   * Create Operation: Appends a newly compiled lead record to state list.
+   * Create Operation: Appends a newly compiled lead record to context state list.
    *
    * @param {Object} data - Cleaned form input values
    */
   const handleCreateLead = (data) => {
-    const newLead = {
-      ...data,
-      id: Date.now(), // Generate numerical ID
-      value: data.value ? parseFloat(data.value) : 0,
-      date: new Date().toLocaleDateString('en-US', {
-        month: 'long',
-        day: 'numeric',
-        year: 'numeric',
-      }),
-    };
-
-    setLeads([newLead, ...leads]);
+    addLead(data);
     handleCloseModal();
     toast.success('Lead created successfully!', {
       icon: '🎉',
       style: {
         borderRadius: '12px',
-        background: '#FFFFFF',
-        color: '#0F172A',
-        border: '1px solid #E2E8F0',
+        background: isDarkMode ? '#1E293B' : '#FFFFFF',
+        color: isDarkMode ? '#F8FAFC' : '#0F172A',
+        border: isDarkMode ? '1px solid #334155' : '1px solid #E2E8F0',
       },
     });
   };
 
   /**
-   * Update Operation: Replaces attributes of the selected lead by mapping ID.
+   * Update Operation: Replaces attributes of the selected lead in context by mapping ID.
    *
    * @param {Object} updatedLead - Lead object containing modified parameters
    */
   const handleUpdateLead = (updatedLead) => {
-    setLeads(leads.map((l) => (l.id === updatedLead.id ? updatedLead : l)));
+    updateLead(updatedLead);
     handleCloseModal();
     toast.success('Lead profile updated successfully!', {
       icon: '💾',
       style: {
         borderRadius: '12px',
-        background: '#FFFFFF',
-        color: '#0F172A',
-        border: '1px solid #E2E8F0',
+        background: isDarkMode ? '#1E293B' : '#FFFFFF',
+        color: isDarkMode ? '#F8FAFC' : '#0F172A',
+        border: isDarkMode ? '1px solid #334155' : '1px solid #E2E8F0',
       },
     });
   };
 
   /**
-   * Delete Operation: Filters out a lead record by ID and issues a warning toast.
+   * Delete Operation: Filters out a lead record by ID in context and issues a warning toast.
    *
    * @param {string|number} id - Target lead unique identifier
    */
   const handleDeleteLead = (id) => {
     const leadToDelete = leads.find((l) => l.id === id);
-    setLeads(leads.filter((l) => l.id !== id));
+    deleteLead(id);
     
     // React Hot Toast notification (red style) for delete warning actions
     toast.error(`Deleted lead: ${leadToDelete ? leadToDelete.name : 'Lead Profile'}`, {
       icon: '🗑️',
       style: {
         borderRadius: '12px',
-        background: '#FEF2F2',
+        background: isDarkMode ? '#1E293B' : '#FEF2F2',
         color: '#EF4444',
-        border: '1px solid #FEE2E2',
+        border: isDarkMode ? '1px solid #7F1D1D' : '1px solid #FEE2E2',
       },
     });
   };
+
+  // Trigger modal display if routed from Dashboard with 'openAddModal' set
+  useEffect(() => {
+    if (location.state?.openAddModal) {
+      const timer = setTimeout(() => {
+        handleOpenAddModal();
+      }, 0);
+      // Clean up routing history to prevent modal triggering on manual page reloads
+      window.history.replaceState({}, document.title);
+      return () => clearTimeout(timer);
+    }
+  }, [location]);
+
+  // Accessibility: Listen for Escape key down to exit the modal overlay
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && isModalOpen) {
+        handleCloseModal();
+      }
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isModalOpen]);
 
   const handleClearFilters = () => {
     setSearchQuery('');
@@ -188,15 +171,15 @@ const Leads = () => {
     );
 
   return (
-    <div className="space-y-6 animate-fade-in relative">
+    <div className="space-y-6 animate-fade-in relative pb-8">
       {/* Toast popup notifications configuration */}
       <Toaster position="top-right" reverseOrder={false} />
 
       {/* Control Actions Ribbon: Search, Filter, View Toggles, Action Trigger */}
-      <div className="flex flex-col xl:flex-row justify-between items-stretch xl:items-center gap-4 bg-card p-6 rounded-2xl border border-slate-200/80 shadow-sm">
+      <div className="flex flex-col xl:flex-row justify-between items-stretch xl:items-center gap-4 bg-white dark:bg-gray-800 p-4 md:p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm transition-colors duration-200">
         
         {/* Left Side Controls: Search & Stage Filtering */}
-        <div className="flex flex-col gap-3 flex-1">
+        <div className="flex flex-col gap-3.5 flex-1">
           <SearchBar value={searchQuery} onChange={setSearchQuery} />
           <FilterBar
             activeFilter={activeFilter}
@@ -206,16 +189,16 @@ const Leads = () => {
         </div>
 
         {/* Right Side Controls: View Toggles & Add Lead Trigger */}
-        <div className="flex items-center justify-between sm:justify-start gap-4">
+        <div className="flex items-center justify-between md:justify-start gap-4">
           
-          {/* Toggle View mode panel buttons */}
-          <div className="flex items-center bg-slate-100/80 p-1 rounded-lg border border-slate-200/50">
+          {/* Toggle View mode panel buttons - Only visible on Tablet (md) viewports */}
+          <div className="hidden md:flex lg:hidden items-center bg-gray-100 dark:bg-gray-900 p-1 rounded-lg border border-gray-200 dark:border-gray-750 transition-colors duration-200">
             <button
               onClick={() => setViewMode('table')}
-              className={`p-1.5 rounded-md transition-all duration-150 cursor-pointer ${
+              className={`p-2 rounded-md transition-all duration-150 cursor-pointer min-h-[36px] flex items-center justify-center ${
                 viewMode === 'table'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-text-gray hover:text-text-dark'
+                  ? 'bg-white dark:bg-gray-800 text-primary shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
               title="Table View Layout"
               aria-label="Switch to Table view layout"
@@ -224,10 +207,10 @@ const Leads = () => {
             </button>
             <button
               onClick={() => setViewMode('card')}
-              className={`p-1.5 rounded-md transition-all duration-150 cursor-pointer ${
+              className={`p-2 rounded-md transition-all duration-150 cursor-pointer min-h-[36px] flex items-center justify-center ${
                 viewMode === 'card'
-                  ? 'bg-white text-primary shadow-sm'
-                  : 'text-text-gray hover:text-text-dark'
+                  ? 'bg-white dark:bg-gray-800 text-primary shadow-sm'
+                  : 'text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white'
               }`}
               title="Card View Layout"
               aria-label="Switch to Card view layout"
@@ -236,10 +219,10 @@ const Leads = () => {
             </button>
           </div>
 
-          {/* Add New Lead Trigger Button */}
+          {/* Add New Lead Trigger Button - Min 44px tap target on mobile */}
           <button
             onClick={handleOpenAddModal}
-            className="px-4.5 py-2.5 rounded-lg bg-primary hover:bg-primary/95 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-primary/25 active:scale-98"
+            className="w-full md:w-auto px-4.5 py-2.5 min-h-[44px] rounded-lg bg-primary hover:bg-primary/95 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-primary/25 active:scale-98"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add New Lead</span>
@@ -247,33 +230,31 @@ const Leads = () => {
         </div>
       </div>
 
-      {/* Main Catalog View rendering */}
-      {viewMode === 'table' ? (
-        <div className="hidden md:block">
-          {filteredLeads.length === 0 ? (
-            <EmptyState
-              totalCount={leads.length}
-              onClearFilters={handleClearFilters}
-            />
-          ) : (
-            <LeadTable
-              leads={filteredLeads}
-              onEdit={handleOpenEditModal}
-              onDelete={handleDeleteLead}
-            />
-          )}
-        </div>
-      ) : null}
-
-      {/* Renders Grid Card layout on toggle selection OR as stack structure for mobile viewports */}
-      <div className={`${viewMode === 'card' ? 'block' : 'block md:hidden'}`}>
+      {/* 1. Table view: on desktop always, or on tablet when viewMode === 'table' */}
+      <div className={`hidden lg:block ${viewMode === 'table' ? 'md:block' : ''}`}>
         {filteredLeads.length === 0 ? (
           <EmptyState
             totalCount={leads.length}
             onClearFilters={handleClearFilters}
           />
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <LeadTable
+            leads={filteredLeads}
+            onEdit={handleOpenEditModal}
+            onDelete={handleDeleteLead}
+          />
+        )}
+      </div>
+
+      {/* 2. Card view: on mobile always, or on tablet when viewMode === 'card' */}
+      <div className={`block lg:hidden ${viewMode === 'card' ? 'md:block' : 'md:hidden'}`}>
+        {filteredLeads.length === 0 ? (
+          <EmptyState
+            totalCount={leads.length}
+            onClearFilters={handleClearFilters}
+          />
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 animate-scale-up">
             {filteredLeads.map((lead) => (
               <LeadCard
                 key={lead.id}
@@ -286,16 +267,16 @@ const Leads = () => {
         )}
       </div>
 
-      {/* Unified Create/Edit Lead Modal dialog overlay */}
+      {/* Unified Create/Edit Lead Modal dialog overlay - Full Screen on mobile, centered max-w-lg on tablet+ */}
       {isModalOpen && (
         <div
-          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-4"
+          className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm flex items-center justify-center z-50 p-0 md:p-4 animate-fade-in"
           role="dialog"
           aria-modal="true"
           aria-labelledby="form-dialog-title"
         >
-          {/* Modal Card frame Container */}
-          <div className="bg-card w-full max-w-lg rounded-2xl border border-slate-200 shadow-2xl overflow-hidden animate-scale-up p-6">
+          {/* Modal Card frame Container - Full screen w-full h-full on mobile, auto-height max-w-lg rounded-2xl on tablet+ */}
+          <div className="bg-white dark:bg-gray-800 w-full h-full md:h-auto md:max-w-lg rounded-none md:rounded-2xl border-0 md:border border-gray-250 dark:border-gray-700 shadow-2xl overflow-y-auto md:overflow-visible p-6 transition-all duration-200">
             <LeadForm
               initialData={selectedLead}
               onSubmit={handleFormSubmit}

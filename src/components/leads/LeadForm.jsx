@@ -98,16 +98,16 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-4">
       {/* Title */}
-      <h2 className="text-xl font-bold text-text-dark mb-4" id="form-dialog-title">
+      <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4" id="form-dialog-title">
         {isEditMode ? 'Edit Lead Profile' : 'Create New Lead'}
       </h2>
-      <p className="text-xs text-text-gray mb-6">
+      <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">
         {isEditMode ? 'Modify details of the existing lead below.' : 'Add a new contact to your lead pipeline database.'} Fields marked with * are required.
       </p>
 
       {/* Name Input */}
       <div>
-        <label htmlFor="lead-name" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+        <label htmlFor="lead-name" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
           Lead Name *
         </label>
         <input
@@ -119,10 +119,10 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           aria-required="true"
           aria-invalid={!!errors.name}
           aria-describedby={errors.name ? 'lead-name-error' : undefined}
-          className={`w-full text-sm px-3.5 py-2.5 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
+          className={`w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
             errors.name
               ? 'border-danger focus:ring-danger/25 bg-red-50/10'
-              : 'border-slate-200 focus:border-primary focus:ring-primary/20'
+              : 'border-gray-250 dark:border-gray-700 focus:border-primary focus:ring-primary/20'
           }`}
         />
         {errors.name && (
@@ -134,7 +134,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
 
       {/* Company Input */}
       <div>
-        <label htmlFor="lead-company" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+        <label htmlFor="lead-company" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
           Company *
         </label>
         <input
@@ -146,10 +146,10 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
           aria-required="true"
           aria-invalid={!!errors.company}
           aria-describedby={errors.company ? 'lead-company-error' : undefined}
-          className={`w-full text-sm px-3.5 py-2.5 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
+          className={`w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
             errors.company
               ? 'border-danger focus:ring-danger/25 bg-red-50/10'
-              : 'border-slate-200 focus:border-primary focus:ring-primary/20'
+              : 'border-gray-250 dark:border-gray-700 focus:border-primary focus:ring-primary/20'
           }`}
         />
         {errors.company && (
@@ -163,7 +163,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Email */}
         <div>
-          <label htmlFor="lead-email" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+          <label htmlFor="lead-email" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
             Email Address *
           </label>
           <input
@@ -175,10 +175,10 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             aria-required="true"
             aria-invalid={!!errors.email}
             aria-describedby={errors.email ? 'lead-email-error' : undefined}
-            className={`w-full text-sm px-3.5 py-2.5 border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
+            className={`w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border rounded-lg focus:outline-none focus:ring-2 transition-all duration-150 ${
               errors.email
                 ? 'border-danger focus:ring-danger/25 bg-red-50/10'
-                : 'border-slate-200 focus:border-primary focus:ring-primary/20'
+                : 'border-gray-250 dark:border-gray-700 focus:border-primary focus:ring-primary/20'
             }`}
           />
           {errors.email && (
@@ -190,7 +190,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
 
         {/* Phone */}
         <div>
-          <label htmlFor="lead-phone" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+          <label htmlFor="lead-phone" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
             Phone Number
           </label>
           <input
@@ -199,7 +199,7 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
             value={formData.phone}
             onChange={(e) => handleChange('phone', e.target.value)}
             placeholder="+1 (555) 000-0000"
-            className="w-full text-sm px-3.5 py-2.5 border border-slate-200 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
+            className="w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border border-gray-250 dark:border-gray-700 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
           />
         </div>
       </div>
@@ -208,17 +208,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         {/* Status */}
         <div>
-          <label htmlFor="lead-status" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+          <label htmlFor="lead-status" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
             Lead Status
           </label>
           <select
             id="lead-status"
             value={formData.status}
             onChange={(e) => handleChange('status', e.target.value)}
-            className="w-full text-sm px-3.5 py-2.5 border border-slate-200 bg-white rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all duration-150"
+            className="w-full text-sm px-3.5 py-2.5 border border-gray-250 dark:border-gray-700 bg-white dark:bg-gray-850 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all duration-150"
           >
             {STATUS_OPTIONS.map((status) => (
-              <option key={status} value={status}>
+              <option key={status} value={status} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                 {status}
               </option>
             ))}
@@ -227,17 +227,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
 
         {/* Source */}
         <div>
-          <label htmlFor="lead-source" className="block text-xs font-bold text-text-gray uppercase tracking-wider mb-1.5">
+          <label htmlFor="lead-source" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
             Lead Source
           </label>
           <select
             id="lead-source"
             value={formData.source}
             onChange={(e) => handleChange('source', e.target.value)}
-            className="w-full text-sm px-3.5 py-2.5 border border-slate-200 bg-white rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all duration-150"
+            className="w-full text-sm px-3.5 py-2.5 border border-gray-250 dark:border-gray-700 bg-white dark:bg-gray-850 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 cursor-pointer transition-all duration-150"
           >
             {SOURCE_OPTIONS.map((source) => (
-              <option key={source} value={source}>
+              <option key={source} value={source} className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white">
                 {source}
               </option>
             ))}
@@ -246,17 +246,17 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
       </div>
 
       {/* Actions */}
-      <div className="pt-6 border-t border-slate-100 flex justify-end gap-3">
+      <div className="pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
         <button
           type="button"
           onClick={onCancel}
-          className="px-4.5 py-2 border border-slate-200 text-sm font-semibold rounded-lg text-text-gray hover:bg-slate-50 cursor-pointer transition-colors duration-150 active:scale-98"
+          className="px-4.5 py-2.5 min-h-[44px] border border-gray-200 dark:border-gray-700 text-sm font-semibold rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer transition-colors duration-155 active:scale-98 flex items-center justify-center"
         >
           Cancel
         </button>
         <button
           type="submit"
-          className="px-5 py-2 bg-primary hover:bg-primary/95 text-white text-sm font-semibold rounded-lg shadow-sm shadow-primary/20 hover:shadow-md transition-all duration-150 cursor-pointer active:scale-98"
+          className="px-5 py-2.5 min-h-[44px] bg-primary hover:bg-primary/95 text-white text-sm font-semibold rounded-lg shadow-sm shadow-primary/20 hover:shadow-md transition-all duration-155 cursor-pointer active:scale-98 flex items-center justify-center"
         >
           {isEditMode ? 'Save Changes' : 'Create Lead'}
         </button>

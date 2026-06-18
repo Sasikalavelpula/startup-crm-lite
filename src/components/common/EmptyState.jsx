@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 /**
@@ -13,19 +12,19 @@ const EmptyState = ({ totalCount, onClearFilters }) => {
   const isEmptyDatabase = totalCount === 0;
 
   return (
-    <div className="bg-card p-12 text-center rounded-2xl border border-slate-200/80 shadow-sm animate-scale-up">
+    <div className="bg-white dark:bg-gray-800 p-12 text-center rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm animate-scale-up">
       {isEmptyDatabase ? (
         <>
-          <h3 className="text-lg font-semibold text-text-dark mb-2">No leads yet</h3>
-          <p className="text-text-gray text-sm">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No leads yet</h3>
+          <p className="text-gray-500 dark:text-gray-400 text-sm">
             Get started by adding your first lead using the{' '}
-            <span className="font-semibold text-text-dark">Add New Lead</span> button above.
+            <span className="font-semibold text-gray-900 dark:text-white">Add New Lead</span> button above.
           </p>
         </>
       ) : (
         <>
-          <h3 className="text-lg font-semibold text-text-dark mb-2">No leads found</h3>
-          <p className="text-text-gray text-sm mb-4">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2">No leads found</h3>
+          <p className="text-gray-500 dark:text-gray-400 text-sm mb-4">
             No leads match your current search or filter. Try adjusting your criteria.
           </p>
           <button

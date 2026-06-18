@@ -16,11 +16,11 @@ import StatusBadge from './StatusBadge';
  */
 const LeadTable = ({ leads = [], onEdit, onDelete }) => {
   return (
-    <div className="bg-card rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden animate-scale-up">
+    <div className="bg-white dark:bg-gray-800 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm overflow-hidden animate-scale-up transition-colors duration-200">
       <div className="overflow-x-auto">
         <table className="w-full text-left border-collapse" aria-label="Leads catalog table">
           <thead>
-            <tr className="bg-slate-50/70 border-b border-slate-100 text-xs font-bold text-text-gray uppercase tracking-wider">
+            <tr className="bg-gray-50/70 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700 text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider transition-colors duration-200">
               <th className="py-4 px-6">Name</th>
               <th className="py-4 px-6">Company</th>
               <th className="py-4 px-6">Status</th>
@@ -30,20 +30,20 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
               <th className="py-4 px-6 text-right">Actions</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-slate-100 text-sm text-slate-755">
+          <tbody className="divide-y divide-gray-100 dark:divide-gray-700 text-sm text-gray-700 dark:text-gray-300">
             {leads.length > 0 ? (
               leads.map((lead) => (
                 <tr
                   key={lead.id}
-                  className="hover:bg-slate-50/40 transition-colors duration-150 group"
+                  className="hover:bg-gray-50/40 dark:hover:bg-gray-700/30 transition-colors duration-150 group"
                 >
                   {/* Lead Name */}
-                  <td className="py-4 px-6 font-semibold text-text-dark group-hover:text-primary transition-colors duration-200">
+                  <td className="py-4 px-6 font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors duration-200">
                     {lead.name}
                   </td>
                   
                   {/* Company */}
-                  <td className="py-4 px-6 text-slate-600 font-medium">
+                  <td className="py-4 px-6 text-gray-650 dark:text-gray-400 font-medium">
                     {lead.company}
                   </td>
                   
@@ -53,9 +53,9 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
                   </td>
                   
                   {/* Email */}
-                  <td className="py-4 px-6 text-xs font-medium text-slate-650">
+                  <td className="py-4 px-6 text-xs font-medium text-gray-500 dark:text-gray-400">
                     <div className="flex items-center gap-1.5 max-w-[180px] truncate">
-                      <Mail className="w-3.5 h-3.5 text-slate-400 flex-shrink-0" />
+                      <Mail className="w-3.5 h-3.5 text-gray-400 flex-shrink-0" />
                       <a
                         href={`mailto:${lead.email}`}
                         className="hover:text-primary transition-colors duration-150 truncate"
@@ -67,14 +67,20 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
                   
                   {/* Source */}
                   <td className="py-4 px-6">
-                    <span className="text-[10px] font-bold text-slate-400 uppercase bg-slate-50 px-2.5 py-0.5 rounded border border-slate-100">
+                    <span className="text-[10px] font-bold text-gray-400 dark:text-gray-300 uppercase bg-gray-50 dark:bg-gray-900/60 px-2.5 py-0.5 rounded border border-gray-200 dark:border-gray-700">
                       {lead.source}
                     </span>
                   </td>
                   
                   {/* Date Added */}
-                  <td className="py-4 px-6 text-xs text-text-gray font-medium">
-                    {lead.date || 'June 16, 2026'}
+                  <td className="py-4 px-6 text-xs text-gray-500 dark:text-gray-400 font-medium">
+                    {lead.createdAt 
+                      ? new Date(lead.createdAt).toLocaleDateString('en-US', {
+                          month: 'long',
+                          day: 'numeric',
+                          year: 'numeric',
+                        })
+                      : (lead.date || 'June 16, 2026')}
                   </td>
                   
                   {/* Actions (Pencil & Trash icons) */}
@@ -82,7 +88,7 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
                     <div className="flex items-center justify-end gap-2">
                       <button
                         onClick={() => onEdit(lead)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-slate-100 transition-all duration-155 cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-155 cursor-pointer"
                         title={`Edit ${lead.name}`}
                         aria-label={`Edit ${lead.name}`}
                       >
@@ -90,7 +96,7 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
                       </button>
                       <button
                         onClick={() => onDelete(lead.id)}
-                        className="p-1.5 rounded-lg text-slate-400 hover:text-danger hover:bg-red-50 transition-all duration-155 cursor-pointer"
+                        className="p-1.5 rounded-lg text-gray-400 dark:text-gray-300 hover:text-danger hover:bg-red-50 dark:hover:bg-red-950/20 transition-all duration-155 cursor-pointer"
                         title={`Delete ${lead.name}`}
                         aria-label={`Delete ${lead.name}`}
                       >
@@ -104,7 +110,7 @@ const LeadTable = ({ leads = [], onEdit, onDelete }) => {
               <tr>
                 <td
                   colSpan="7"
-                  className="py-16 text-center text-text-gray font-semibold bg-slate-50/10"
+                  className="py-16 text-center text-gray-500 dark:text-gray-450 font-semibold bg-gray-50/10 dark:bg-gray-800/10"
                 >
                   No leads found matching your criteria.
                 </td>

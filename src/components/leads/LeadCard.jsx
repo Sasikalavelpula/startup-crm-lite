@@ -23,17 +23,17 @@ import StatusBadge from './StatusBadge';
  */
 const LeadCard = ({ lead, onEdit, onDelete }) => {
   return (
-    <article className="bg-card p-6 rounded-2xl border border-slate-200/80 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[200px] animate-scale-up group">
+    <article className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all duration-300 flex flex-col justify-between min-h-[200px] animate-scale-up group">
       <div>
         {/* Header: Name and Stage Badge */}
         <div className="flex justify-between items-start gap-3 mb-3">
           <div className="min-w-0">
-            <h4 className="font-bold text-base text-text-dark truncate leading-snug group-hover:text-primary transition-colors duration-200">
+            <h4 className="font-bold text-base text-gray-900 dark:text-white truncate leading-snug group-hover:text-primary transition-colors duration-200">
               {lead.name}
             </h4>
             
-            <div className="flex items-center gap-1.5 text-xs text-text-gray mt-1 font-medium">
-              <Building2 className="w-3.5 h-3.5 text-slate-450" />
+            <div className="flex items-center gap-1.5 text-xs text-gray-500 dark:text-gray-400 mt-1 font-medium">
+              <Building2 className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500" />
               <span className="truncate">{lead.company}</span>
             </div>
           </div>
@@ -43,22 +43,22 @@ const LeadCard = ({ lead, onEdit, onDelete }) => {
         </div>
 
         {/* Lead Contact Info Block */}
-        <div className="space-y-2 py-3 border-t border-b border-slate-100/70 text-xs text-slate-650">
+        <div className="space-y-2 py-3 border-t border-b border-gray-100 dark:border-gray-700 text-xs text-gray-650 dark:text-gray-300">
           <div className="flex items-center gap-2">
-            <Mail className="w-3.5 h-3.5 text-slate-400 stroke-[1.8]" />
+            <Mail className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 stroke-[1.8]" />
             <a href={`mailto:${lead.email}`} className="hover:text-primary truncate transition-colors duration-150">
               {lead.email}
             </a>
           </div>
 
           <div className="flex items-center gap-2">
-            <Phone className="w-3.5 h-3.5 text-slate-400 stroke-[1.8]" />
+            <Phone className="w-3.5 h-3.5 text-gray-400 dark:text-gray-500 stroke-[1.8]" />
             {lead.phone && lead.phone !== 'n/a' ? (
               <a href={`tel:${lead.phone}`} className="hover:text-primary transition-colors duration-150">
                 {lead.phone}
               </a>
             ) : (
-              <span className="text-slate-400 italic">No phone added</span>
+              <span className="text-gray-400 dark:text-gray-500 italic">No phone added</span>
             )}
           </div>
         </div>
@@ -67,7 +67,7 @@ const LeadCard = ({ lead, onEdit, onDelete }) => {
       {/* Card Action Buttons Footer */}
       <div className="flex justify-between items-center mt-4 pt-1">
         {lead.source && (
-          <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-slate-50 border border-slate-100 px-2 py-0.5 rounded">
+          <span className="text-[10px] font-bold text-gray-400 dark:text-gray-400 uppercase tracking-wider bg-gray-50 dark:bg-gray-900/60 border border-gray-200 dark:border-gray-700 px-2 py-0.5 rounded">
             {lead.source}
           </span>
         )}
@@ -76,7 +76,7 @@ const LeadCard = ({ lead, onEdit, onDelete }) => {
           {/* Edit Trigger */}
           <button
             onClick={() => onEdit(lead)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-primary hover:bg-slate-55/40 transition-all duration-200 cursor-pointer"
+            className="p-1.5 rounded-lg text-gray-400 dark:text-gray-300 hover:text-primary hover:bg-gray-100 dark:hover:bg-gray-700 transition-all duration-200 cursor-pointer"
             title={`Edit ${lead.name}`}
             aria-label={`Edit ${lead.name}`}
           >
@@ -86,7 +86,7 @@ const LeadCard = ({ lead, onEdit, onDelete }) => {
           {/* Delete Trigger */}
           <button
             onClick={() => onDelete(lead.id)}
-            className="p-1.5 rounded-lg text-slate-400 hover:text-danger hover:bg-red-50 transition-all duration-200 cursor-pointer"
+            className="p-1.5 rounded-lg text-gray-400 dark:text-gray-300 hover:text-danger hover:bg-red-50 dark:hover:bg-red-950/20 transition-all duration-200 cursor-pointer"
             title={`Delete ${lead.name}`}
             aria-label={`Delete ${lead.name}`}
           >

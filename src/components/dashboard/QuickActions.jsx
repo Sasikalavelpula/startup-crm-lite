@@ -15,10 +15,10 @@ import { Plus, Users, Download } from 'lucide-react';
  */
 const QuickActions = ({ onAddLead, onViewAll, onExportData }) => {
   return (
-    <div className="bg-card p-6 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between h-full animate-scale-up">
+    <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl border border-gray-200 dark:border-gray-700 shadow-sm flex flex-col justify-between h-full animate-scale-up transition-colors duration-200">
       <div>
-        <h3 className="font-bold text-lg text-text-dark">Quick Actions</h3>
-        <p className="text-xs text-text-gray mb-6">Frequently used tools and shortcuts</p>
+        <h3 className="font-bold text-lg text-gray-900 dark:text-white">Quick Actions</h3>
+        <p className="text-xs text-gray-500 dark:text-gray-400 mb-6">Frequently used tools and shortcuts</p>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-3 md:grid-cols-1 gap-3">
@@ -34,7 +34,7 @@ const QuickActions = ({ onAddLead, onViewAll, onExportData }) => {
         {/* View All Leads Button */}
         <button
           onClick={onViewAll}
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-text-dark font-semibold text-sm transition-all duration-200 cursor-pointer active:scale-98"
+          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold text-sm transition-all duration-200 cursor-pointer active:scale-98"
         >
           <Users className="w-4 h-4 stroke-[2.2]" />
           <span>View All Leads</span>
@@ -43,7 +43,7 @@ const QuickActions = ({ onAddLead, onViewAll, onExportData }) => {
         {/* Export Data Button */}
         <button
           onClick={onExportData}
-          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-slate-200 hover:bg-slate-50 text-text-dark font-semibold text-sm transition-all duration-200 cursor-pointer active:scale-98"
+          className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold text-sm transition-all duration-200 cursor-pointer active:scale-98"
         >
           <Download className="w-4 h-4 stroke-[2.2]" />
           <span>Export Data</span>
