@@ -136,8 +136,8 @@ const Sidebar = ({ isOpen, onClose }) => {
                   JD
                 </div>
                 <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">John Doe</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">john.doe@startup.com</p>
+                  <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">sasikala@startup.com</p>
                 </div>
               </div>
             </div>
@@ -199,8 +199,8 @@ const Sidebar = ({ isOpen, onClose }) => {
               JD
             </div>
             <div className="hidden lg:flex flex-col min-w-0 flex-1">
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">John Doe</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">john.doe@startup.com</p>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">sasikala@startup.com</p>
             </div>
           </div>
         </div>
