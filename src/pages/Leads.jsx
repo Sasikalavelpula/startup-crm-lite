@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import toast, { Toaster } from 'react-hot-toast';
-import { LayoutGrid, List, Plus } from 'lucide-react';
+import { LayoutGrid, List, Plus, Download } from 'lucide-react';
 
 // Import local lead management components
 import LeadForm from '../components/leads/LeadForm';
@@ -12,6 +12,7 @@ import FilterBar from '../components/common/FilterBar';
 import EmptyState from '../components/common/EmptyState';
 import { useLeads } from '../context/LeadContext';
 import { useTheme } from '../context/ThemeContext';
+import { exportLeadsToCSV } from '../utils/csvExport';
 
 /**
  * Leads Page - The core CRM Lead Management console.
@@ -161,6 +162,26 @@ const Leads = () => {
     setActiveFilter('All');
   };
 
+  /**
+   * Action handler for exporting current filtered list of leads.
+   */
+  const handleExportFilteredLeads = () => {
+    if (filteredLeads.length === 0) {
+      toast.error('No leads available to export!');
+      return;
+    }
+    const toastId = toast.loading('Generating export CSV package...');
+    setTimeout(() => {
+      try {
+        exportLeadsToCSV(filteredLeads);
+        toast.success(`${filteredLeads.length} leads exported successfully!`, { id: toastId });
+      } catch (error) {
+        console.error('Export failed:', error);
+        toast.error('Failed to export leads data.', { id: toastId });
+      }
+    }, 800);
+  };
+
   const filteredLeads = leads
     .filter((lead) => activeFilter === 'All' || lead.status === activeFilter)
     .filter(
@@ -188,8 +209,8 @@ const Leads = () => {
           />
         </div>
 
-        {/* Right Side Controls: View Toggles & Add Lead Trigger */}
-        <div className="flex items-center justify-between md:justify-start gap-4">
+        {/* Right Side Controls: View Toggles, Export & Add Lead Trigger */}
+        <div className="flex flex-wrap items-center justify-between md:justify-start gap-4 w-full md:w-auto">
           
           {/* Toggle View mode panel buttons - Only visible on Tablet (md) viewports */}
           <div className="hidden md:flex lg:hidden items-center bg-gray-100 dark:bg-gray-900 p-1 rounded-lg border border-gray-200 dark:border-gray-750 transition-colors duration-200">
@@ -219,10 +240,19 @@ const Leads = () => {
             </button>
           </div>
 
+          {/* Export CSV Button */}
+          <button
+            onClick={handleExportFilteredLeads}
+            className="flex-1 md:flex-initial px-4.5 py-2.5 min-h-[44px] rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer active:scale-98"
+          >
+            <Download className="w-4 h-4 stroke-[2.2]" />
+            <span>Export CSV</span>
+          </button>
+
           {/* Add New Lead Trigger Button - Min 44px tap target on mobile */}
           <button
             onClick={handleOpenAddModal}
-            className="w-full md:w-auto px-4.5 py-2.5 min-h-[44px] rounded-lg bg-primary hover:bg-primary/95 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-primary/25 active:scale-98"
+            className="flex-1 md:flex-initial px-4.5 py-2.5 min-h-[44px] rounded-lg bg-primary hover:bg-primary/95 text-white font-semibold text-sm transition-all duration-150 flex items-center justify-center gap-2 cursor-pointer shadow-sm shadow-primary/25 active:scale-98"
           >
             <Plus className="w-4 h-4 stroke-[2.5]" />
             <span>Add New Lead</span>

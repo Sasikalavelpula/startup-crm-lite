@@ -11,6 +11,7 @@ import RecentLeads from '../components/dashboard/RecentLeads';
 import QuickActions from '../components/dashboard/QuickActions';
 import { useLeads } from '../context/LeadContext';
 import { useTheme } from '../context/ThemeContext';
+import { exportLeadsToCSV } from '../utils/csvExport';
 
 /**
  * Mock chart data representing lead acquisition over the past 6 months.
@@ -94,15 +95,26 @@ const Dashboard = () => {
 
   /**
    * Action handler for exporting CRM data.
-   * Simulates a CSV download with a high-fidelity visual toast completion feedback.
+   * Generates and downloads a CSV export file of all leads with visual toast progress feedback.
    */
   const handleExportData = () => {
+    if (!leads || leads.length === 0) {
+      toast.error('No leads available to export!');
+      return;
+    }
+
     const toastId = toast.loading('Generating export CSV package...');
     
     // Simulate slight download delay for professional UX feedback
     setTimeout(() => {
-      toast.success('Leads database exported successfully!', { id: toastId });
-    }, 1200);
+      try {
+        exportLeadsToCSV(leads);
+        toast.success('Leads database exported successfully!', { id: toastId });
+      } catch (error) {
+        console.error('Export failed:', error);
+        toast.error('Failed to export leads data.', { id: toastId });
+      }
+    }, 800);
   };
 
   return (
