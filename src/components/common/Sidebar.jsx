@@ -133,7 +133,7 @@ const Sidebar = ({ isOpen, onClose }) => {
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-905/30 -mx-5 -mb-5">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600">
-                  JD
+                  SV
                 </div>
                 <div className="flex-1 min-w-0">
                   <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
@@ -196,7 +196,7 @@ const Sidebar = ({ isOpen, onClose }) => {
         <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-center lg:justify-start">
           <div className="flex items-center justify-center lg:justify-start gap-3 w-full">
             <div className="w-10 h-10 rounded-full bg-gray-250 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600 flex-shrink-0">
-              JD
+              SV
             </div>
             <div className="hidden lg:flex flex-col min-w-0 flex-1">
               <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
