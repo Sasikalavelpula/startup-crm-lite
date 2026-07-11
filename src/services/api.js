@@ -3,7 +3,7 @@ import toast from 'react-hot-toast';
 
 // Create an Axios instance with base URL from environment variables, fallback to local backend port
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:5000',
+  baseURL: import.meta.env.VITE_API_URL || 'startup-crm-lite-production-519a.up.railway.app',
   headers: {
     'Content-Type': 'application/json',
   },
