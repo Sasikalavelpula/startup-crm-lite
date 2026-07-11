@@ -1,6 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
+import { useAuth } from '../../context/AuthContext';
 
 /**
  * Sidebar - Responsive Navigation component.
@@ -14,6 +15,13 @@ import PropTypes from 'prop-types';
  * @param {Function} props.onClose - Mobile menu drawer close callback
  */
 const Sidebar = ({ isOpen, onClose }) => {
+  const { user, logout } = useAuth();
+  const getInitials = (name) => {
+    if (!name) return 'U';
+    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+  };
+  const initials = getInitials(user?.name);
+
   const menuItems = [
     {
       name: 'Dashboard',
@@ -131,14 +139,27 @@ const Sidebar = ({ isOpen, onClose }) => {
 
             {/* Profile Section Footer */}
             <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-905/30 -mx-5 -mb-5">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600">
-                  SV
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <div className="w-10 h-10 rounded-full bg-gray-250 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600 flex-shrink-0">
+                    {initials}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name || 'Guest'}</h4>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email || 'guest@startup.com'}</p>
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
-                  <p className="text-xs text-gray-500 dark:text-gray-400 truncate">sasikala@startup.com</p>
-                </div>
+                {/* Logout Button */}
+                <button
+                  onClick={logout}
+                  className="p-2 rounded-xl text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-gray-150 dark:hover:bg-gray-750 transition-colors cursor-pointer flex-shrink-0 min-h-[40px] min-w-[40px] flex items-center justify-center"
+                  title="Log Out"
+                  aria-label="Log Out"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                  </svg>
+                </button>
               </div>
             </div>
           </aside>
@@ -193,15 +214,32 @@ const Sidebar = ({ isOpen, onClose }) => {
         </div>
 
         {/* User Footnotes section */}
-        <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-center lg:justify-start">
-          <div className="flex items-center justify-center lg:justify-start gap-3 w-full">
-            <div className="w-10 h-10 rounded-full bg-gray-250 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600 flex-shrink-0">
-              SV
-            </div>
+        <div className="p-4 border-t border-gray-200 dark:border-gray-700 bg-gray-50/50 dark:bg-gray-900/30 flex items-center justify-center lg:justify-start select-none">
+          <div className="flex items-center justify-center lg:justify-start gap-3 w-full min-w-0">
+            {/* Clickable logout avatar on collapsed sidebar (md screen size) */}
+            <button
+              onClick={logout}
+              className="w-10 h-10 rounded-full bg-gray-250 dark:bg-gray-700 flex items-center justify-center text-gray-900 dark:text-white font-bold border border-gray-300 dark:border-gray-600 hover:border-red-500 dark:hover:border-red-400 hover:text-red-500 dark:hover:text-red-400 transition-all duration-150 cursor-pointer flex-shrink-0 focus:outline-none"
+              title="Log Out"
+              aria-label="Log Out"
+            >
+              {initials}
+            </button>
             <div className="hidden lg:flex flex-col min-w-0 flex-1">
-              <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">SasiKala Velpula</h4>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">sasikala@startup.com</p>
+              <h4 className="text-sm font-bold text-gray-900 dark:text-white truncate">{user?.name || 'Guest'}</h4>
+              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email || 'guest@startup.com'}</p>
             </div>
+            {/* Standard logout button on expanded sidebar (lg screen size) */}
+            <button
+              onClick={logout}
+              className="hidden lg:block p-1.5 rounded-lg text-gray-400 hover:text-red-500 dark:hover:text-red-400 hover:bg-gray-100 dark:hover:bg-gray-750 transition-colors cursor-pointer"
+              title="Log Out"
+              aria-label="Log Out"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+            </button>
           </div>
         </div>
       </aside>

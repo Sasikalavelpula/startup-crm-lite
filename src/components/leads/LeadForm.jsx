@@ -26,6 +26,8 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
     phone: initialData?.phone || '',
     status: initialData?.status || 'New',
     source: initialData?.source || 'Website',
+    value: initialData?.value !== undefined ? initialData.value : '',
+    notes: initialData?.notes || '',
   });
 
   const [errors, setErrors] = useState({});
@@ -91,6 +93,8 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         company: formData.company.trim(),
         email: formData.email.trim(),
         phone: formData.phone.trim(),
+        value: formData.value !== '' ? parseFloat(formData.value) : 0,
+        notes: formData.notes.trim(),
       });
     }
   };
@@ -245,6 +249,40 @@ const LeadForm = ({ initialData, onSubmit, onCancel }) => {
         </div>
       </div>
 
+      {/* Grid: Value & Notes */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {/* Value */}
+        <div className="md:col-span-1">
+          <label htmlFor="lead-value" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+            Deal Value ($)
+          </label>
+          <input
+            id="lead-value"
+            type="number"
+            min="0"
+            value={formData.value}
+            onChange={(e) => handleChange('value', e.target.value)}
+            placeholder="e.g. 5000"
+            className="w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border border-gray-250 dark:border-gray-700 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
+          />
+        </div>
+
+        {/* Notes */}
+        <div className="md:col-span-2">
+          <label htmlFor="lead-notes" className="block text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1.5">
+            Notes
+          </label>
+          <input
+            id="lead-notes"
+            type="text"
+            value={formData.notes}
+            onChange={(e) => handleChange('notes', e.target.value)}
+            placeholder="e.g. Needs pricing details"
+            className="w-full text-sm px-3.5 py-2.5 bg-white dark:bg-gray-850 text-gray-900 dark:text-white border border-gray-250 dark:border-gray-700 rounded-lg focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-150"
+          />
+        </div>
+      </div>
+
       {/* Actions */}
       <div className="pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
         <button
@@ -274,6 +312,8 @@ LeadForm.propTypes = {
     phone: PropTypes.string,
     status: PropTypes.string,
     source: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    notes: PropTypes.string,
   }),
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
