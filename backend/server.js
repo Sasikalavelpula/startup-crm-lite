@@ -153,7 +153,7 @@ const startServer = async () => {
     await connectDB();
 
     // Start Express listener
-    app.listen(PORT, () => {
+    app.listen(PORT, '0.0.0.0', () => {
       console.log(`Server running on port ${PORT} in ${NODE_ENV} mode`);
     });
   } catch (error) {

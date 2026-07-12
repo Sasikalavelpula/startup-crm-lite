@@ -5,9 +5,11 @@ import dns from 'dns';
 // Configure dotenv just in case this module is executed independently (e.g. in seeding scripts)
 dotenv.config();
 
-// Configure Node's internal c-ares DNS resolver to use Google DNS.
+// Configure Node's internal c-ares DNS resolver to use Google DNS in local development.
 // This prevents querySrv ECONNREFUSED errors commonly caused by local router DNS servers on Windows.
-dns.setServers(['8.8.8.8', '8.8.4.4']);
+if (process.env.NODE_ENV !== 'production' && process.platform === 'win32') {
+  dns.setServers(['8.8.8.8', '8.8.4.4']);
+}
 
 /**
  * Establishes a connection to the MongoDB Atlas database.
