@@ -13,7 +13,7 @@ import errorHandler from './middleware/errorHandler.js';
 
 // Route Imports
 import authRoutes from './routes/authroutes.js';
-import leadRoutes from './routes/leadRoutes.js';
+import leadRoutes from './routes/leadroutes.js';
 
 // Load environment variables as early as possible
 dotenv.config();

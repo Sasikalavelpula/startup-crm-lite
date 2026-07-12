@@ -1,6 +1,6 @@
 import User from '../models/User.js';
 import jwt from 'jsonwebtoken';
-import { successResponse, errorResponse } from '../utils/apiResponse.js';
+import { successResponse, errorResponse } from '../utils/apiresponse.js';
 
 /**
  * Helper utility to sign a JWT for a user.

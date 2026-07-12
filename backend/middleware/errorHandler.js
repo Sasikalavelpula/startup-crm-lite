@@ -1,4 +1,4 @@
-import { errorResponse } from '../utils/apiResponse.js';
+import { errorResponse } from '../utils/apiresponse.js';
 
 /**
  * Global centralized error-handling middleware for Express applications.

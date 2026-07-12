@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import Lead from '../models/Lead.js';
-import { successResponse, errorResponse, paginatedResponse } from '../utils/apiResponse.js';
+import { successResponse, errorResponse, paginatedResponse } from '../utils/apiresponse.js';
 
 /**
  * Retrieves all leads belonging to the authenticated user with filtering, searching, and pagination.

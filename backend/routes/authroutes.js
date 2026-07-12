@@ -2,13 +2,13 @@ import express from 'express';
 import { body } from 'express-validator';
 import { protect } from '../middleware/auth.js';
 import { validate } from '../middleware/validate.js';
-import { successResponse } from '../utils/apiResponse.js';
+import { successResponse } from '../utils/apiresponse.js';
 import {
   register,
   login,
   getProfile,
   updateProfile
-} from '../controllers/authController.js';
+} from '../controllers/authcontroller.js';
 
 const router = express.Router();
 
