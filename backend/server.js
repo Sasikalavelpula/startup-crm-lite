@@ -93,7 +93,7 @@ app.use('/api/auth/', authLimiter);
 
 // 5. Dynamic Whitelist CORS Configuration for Production & Development
 const allowedOrigins = [
-  process.env.FRONTEND_URL,
+  process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null,
   'https://your-app.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174',
