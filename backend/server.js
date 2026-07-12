@@ -13,7 +13,7 @@ import errorHandler from './middleware/errorHandler.js';
 
 // Route Imports
 import authRoutes from './routes/authroutes.js';
-import leadRoutes from './routes/leadroutes.js';
+import leadRoutes from './routes/leadRoutes.js';
 
 // Load environment variables as early as possible
 dotenv.config();
@@ -87,10 +87,14 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
+// Apply rate limiters to respective sub-routes
+app.use('/api/', generalLimiter);
+app.use('/api/auth/', authLimiter);
+
 // 5. Dynamic Whitelist CORS Configuration for Production & Development
 const allowedOrigins = [
-  process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null,
-  'https://your-app.vercel.app',
+  process.env.FRONTEND_URL,
+  'https://startup-crm-lite-theta.vercel.app',
   'http://localhost:5173',
   'http://localhost:5174',
   'http://localhost:5175'
@@ -109,11 +113,6 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
-
-// Apply rate limiters to respective sub-routes
-app.use('/api/', generalLimiter);
-app.use('/api/auth/login', authLimiter);
-app.use('/api/auth/register', authLimiter);
 
 // 6. Parse JSON and URL-encoded bodies with payload limits for security
 app.use(express.json({ limit: '10kb' }));
