@@ -87,10 +87,6 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
-// Apply rate limiters to respective sub-routes
-app.use('/api/', generalLimiter);
-app.use('/api/auth/', authLimiter);
-
 // 5. Dynamic Whitelist CORS Configuration for Production & Development
 const allowedOrigins = [
   process.env.FRONTEND_URL ? process.env.FRONTEND_URL.replace(/\/$/, '') : null,
@@ -113,6 +109,11 @@ const corsOptions = {
   optionsSuccessStatus: 200
 };
 app.use(cors(corsOptions));
+
+// Apply rate limiters to respective sub-routes
+app.use('/api/', generalLimiter);
+app.use('/api/auth/login', authLimiter);
+app.use('/api/auth/register', authLimiter);
 
 // 6. Parse JSON and URL-encoded bodies with payload limits for security
 app.use(express.json({ limit: '10kb' }));
