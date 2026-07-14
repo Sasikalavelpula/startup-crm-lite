@@ -99,7 +99,13 @@ const allowedOrigins = [
 const corsOptions = {
   origin: (origin, callback) => {
     // Allow requests with no origin (like mobile clients, Postman, curl, or server-to-server requests)
-    if (!origin || allowedOrigins.includes(origin)) {
+    // Also allow any subdomains under .vercel.app to handle preview/branch deployments
+    if (
+      !origin || 
+      allowedOrigins.includes(origin) || 
+      origin.endsWith('.vercel.app') || 
+      /^https:\/\/.*\.vercel\.app$/.test(origin)
+    ) {
       callback(null, true);
     } else {
       callback(new Error('Not allowed by CORS'));
